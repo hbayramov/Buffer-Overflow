@@ -12,8 +12,8 @@ We have to disable address space randomization (ASR). ASR is able to put address
 Disable ASR
 
 `$ sudo systcl -w kernel .randomize_va_space=0
-
-[sudo] password for :`
+[sudo] password for :
+`
 
 The gcc compiler has a protection scheme called "Stack Guard". BOF attacks will not work with this scheme. We have to add `fno-stack-protector` option to our command. 
 
@@ -25,9 +25,13 @@ The gcc compiler has a protection scheme called "Stack Guard". BOF attacks will 
 There are security mechanisms against attacks like BOF that use shell programs like /bin/sh linked to /bin/bash. Thus, privileges for shell are dropped and we can not retain the privileges inside the shell. Therefore, we will use another shell, zsh.
 
 `$ sudo su`
+
 `[sudo] password for :`
+
 `apt-get install zsh`
+
 `cp /bin/sh /bin/sh.bak`
+
 `ln -s /bin/zsh /bin/sh`
 
 ## Experiment 1
