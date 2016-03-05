@@ -11,8 +11,8 @@ We have to disable address space randomization (ASR). ASR is able to put address
 
 Disable ASR
 
-`$ sudo systcl -w kernel .randomize_va_space=0`
-`[sudo] password for :`
+```$ sudo systcl -w kernel .randomize_va_space=0
+[sudo] password for :```
 
 The gcc compiler has a protection scheme called "Stack Guard". BOF attacks will not work with this scheme. We have to add `fno-stack-protector` option to our command. 
 
