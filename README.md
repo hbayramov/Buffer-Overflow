@@ -26,11 +26,11 @@ There are security mechanisms against attacks like BOF that use shell programs l
 
 ```$ sudo su
 
-[sudo] password for :`
+[sudo] password for :
 
-apt-get install zsh`
+apt-get install zsh
 
-cp /bin/sh /bin/sh.bak`
+cp /bin/sh /bin/sh.bak
 
 ln -s /bin/zsh /bin/sh```
 
