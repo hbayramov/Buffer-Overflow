@@ -18,6 +18,12 @@ $ sudo systcl -w kernel .randomize_va_space=0
 
 ```
 
+0 - No randomization. Everything is static.
+1 - Conservative randomization. Shared libraries, stack, mmap(), VDSO and heap are randomized.
+2 - Full randomization. In addition to elements listed in the previous point, memory managed through brk() is also randomized.
+
+randomize_va_space value will be set to 2 after reboot. We can disable ASR permanently by adding `sudo nano /etc/sysctl.d/01-disable-aslr.conf` containing `kernel.randomize_va_space=0`
+
 The gcc compiler has a protection scheme called "Stack Guard". BOF attacks will not work with this scheme. We have to add `fno-stack-protector` option to our command. 
 
 `$ gcc -fno-stack-protector -z exestack -g -o sample sample.c`
