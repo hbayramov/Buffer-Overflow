@@ -18,9 +18,9 @@ $ sudo systcl -w kernel .randomize_va_space=0
 
 ```
 
-0 - No randomization. Everything is static.
-1 - Conservative randomization. Shared libraries, stack, mmap(), VDSO and heap are randomized.
-2 - Full randomization. In addition to elements listed in the previous point, memory managed through brk() is also randomized.
+1. 0 - No randomization. Everything is static.
+2. 1 - Conservative randomization. Shared libraries, stack, mmap(), VDSO and heap are randomized.
+3. 2 - Full randomization. In addition to elements listed in the previous point, memory managed through brk() is also randomized.
 
 randomize_va_space value will be set to 2 after reboot. We can disable ASR permanently by adding `sudo nano /etc/sysctl.d/01-disable-aslr.conf` containing `kernel.randomize_va_space=0`
 
