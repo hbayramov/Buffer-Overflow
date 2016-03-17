@@ -64,11 +64,11 @@ Bof function starts at 0bfffef90 and ends 0bfffef18.  The first word after $ebp 
 
 We also defined breakpoints at *main+48 (at return instruction of main) and *bof+27 (right after strcpy function). Input were sequence of 's' characters (smaller than 100). 
 
-![valid-input-2](https://github.com/wlgzaor/Buffer-Overflow/valid-input-2.png)
+![valid-input-2](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-2.png)
 
 Here we can see that 's' (73 in ASCII) characters fill the appropriate field of stack and return address  wasn't overwritten by 's' characters.
 
-![valid-input-3](https://github.com/wlgzaor/Buffer-Overflow/valid-input-3.png)
+![valid-input-3](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-3.png)
 
 We checked current eip by typing info frame command and there is no changes. Later we will see that how the instruction pointer changes when user enters invalid input.
 
@@ -112,11 +112,11 @@ The previous frame's stack pointer point to (the caller frame), at the moment of
 * eip at 0bfffef1c as mentioned before, but here is the address of the stack (which contains the value "080484be")
 
 
-![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/invalid-input-1.png)
+![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/invalid-input-1.png)
 
 Now we see that return address (first word after ebp) overwritten to 0737373 (ebp was 0*bfffef18).
 
-![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/invalid-input-2.png)
+![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/invalid-input-2.png)
 
 We can check eip register to see changes using info frame. Saved eip updated to 0737373 and there have no instruction like 0737373. So we got segmentation  fault.
 
