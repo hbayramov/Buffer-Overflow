@@ -162,7 +162,7 @@ Now we see that return address is 0bfffeee0. It'll return back to NOP's area ins
 
 Program opens shell but terminates it immediately. Note that, our program gets input using `gets` built-in function. To run shell please get input from user as a argument.
 
-## Experiment 2
+## Experiment 2
 
 We will analyze stackbof in this experiment.
 
