@@ -48,7 +48,7 @@ ln -s /bin/zsh /bin/sh
 
 ## Experiment 1
 
-![valid-input-1](Buffer-Overflow/valid-input-1.png)
+![valid-input-1](https://github.com/wlgzaor/Buffer-Overflow/blob/master/valid-input-1.png)
 
 We firstly executed these commands to check stack boundaries:
 
